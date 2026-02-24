@@ -35,11 +35,11 @@ class DashboardController extends Controller
             ->get();
 
         // Get monthly transaction summary (last 6 months)
-        $monthlySummary = Transaction::selectRaw('
-                strftime("%Y-%m", created_at) as month,
-                SUM(CASE WHEN type = "in" THEN quantity ELSE 0 END) as total_in,
-                SUM(CASE WHEN type = "out" THEN quantity ELSE 0 END) as total_out
-            ')
+        $monthlySummary = Transaction::selectRaw("
+                TO_CHAR(created_at, 'YYYY-MM') as month,
+                SUM(CASE WHEN type = 'in' THEN quantity ELSE 0 END) as total_in,
+                SUM(CASE WHEN type = 'out' THEN quantity ELSE 0 END) as total_out
+            ")
             ->where('created_at', '>=', now()->subMonths(6))
             ->groupBy('month')
             ->orderBy('month')
