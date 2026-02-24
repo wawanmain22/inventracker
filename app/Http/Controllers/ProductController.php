@@ -50,7 +50,7 @@ class ProductController extends Controller
             'filters' => $request->only(['search', 'category', 'stock']),
         ]);
     }
-
+//SELECT WHERE products JOIN categories ON products.category_id = categories.id
     /**
      * Show the form for creating a new resource.
      */

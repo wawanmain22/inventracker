@@ -6,6 +6,7 @@ use App\Models\Category;
 use App\Models\Product;
 use App\Models\Transaction;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -35,8 +36,13 @@ class DashboardController extends Controller
             ->get();
 
         // Get monthly transaction summary (last 6 months)
+        $monthExpression = match (DB::getDriverName()) {
+            'pgsql' => "TO_CHAR(created_at, 'YYYY-MM')",
+            default => "strftime('%Y-%m', created_at)",
+        };
+
         $monthlySummary = Transaction::selectRaw("
-                TO_CHAR(created_at, 'YYYY-MM') as month,
+                {$monthExpression} as month,
                 SUM(CASE WHEN type = 'in' THEN quantity ELSE 0 END) as total_in,
                 SUM(CASE WHEN type = 'out' THEN quantity ELSE 0 END) as total_out
             ")

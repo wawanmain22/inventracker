@@ -204,11 +204,22 @@ php artisan make:service ServiceName --no-interaction
 php artisan make:test FeatureTestName --no-interaction         # Feature test
 php artisan make:test UnitTestName --unit --no-interaction     # Unit test
 
+# Jalankan semua test
+php artisan test --compact
+# Filter test tertentu
+php artisan test --compact --filter=testName
+# Per file
+php artisan test --compact tests/Feature/AuthTest.php
+# Per suite
+php artisan test --compact --testsuite=Feature
+php artisan test --compact --testsuite=Unit
+
 # Other Artisan Commands
 php artisan make:job JobName --no-interaction
 php artisan make:event EventName --no-interaction
 php artisan make:listener ListenerName --no-interaction
 php artisan make:middleware MiddlewareName --no-interaction
+
 ```
 
 ## Screenshots
